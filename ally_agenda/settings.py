@@ -135,7 +135,7 @@ CORS_ALLOWED_ORIGINS = [
     origin.strip()
     for origin in os.getenv(
         "cors_allowed_origins",
-        "http://localhost:5173",
+        "http://localhost:5173,https://front-ally-ra5h.vercel.app",
     ).split(",")
     if origin.strip()
 ]
