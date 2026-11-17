@@ -94,6 +94,13 @@ WSGI_APPLICATION = 'ally_agenda.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
+DB_OPTIONS = {'sslmode': 'require'}
+if os.getenv("DB_SSLROOTCERT") and DB_SSLROOTCERT.is_file():
+    DB_OPTIONS = {
+        'sslmode': 'verify-full',
+        'sslrootcert': str(DB_SSLROOTCERT),
+    }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -104,10 +111,7 @@ DATABASES = {
         'PORT': int(os.environ["port"]),
         'CONN_MAX_AGE': 0,
         'DISABLE_SERVER_SIDE_CURSORS': True,
-        'OPTIONS': {
-            'sslmode': 'verify-full',
-            'sslrootcert': str(DB_SSLROOTCERT),
-        },
+        'OPTIONS': DB_OPTIONS,
     }
 }
 
