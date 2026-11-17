@@ -18,6 +18,14 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
+DB_SSLROOTCERT = Path(
+    os.getenv(
+        "DB_SSLROOTCERT",
+        os.getenv("db_sslrootcert", str(BASE_DIR / "supabase-ca.crt")),
+    )
+)
+if not DB_SSLROOTCERT.is_absolute():
+    DB_SSLROOTCERT = BASE_DIR / DB_SSLROOTCERT
 
 
 # Quick-start development settings - unsuitable for production
@@ -96,7 +104,10 @@ DATABASES = {
         'PORT': int(os.environ["port"]),
         'CONN_MAX_AGE': 0,
         'DISABLE_SERVER_SIDE_CURSORS': True,
-        'OPTIONS': {'sslmode': 'require'},
+        'OPTIONS': {
+            'sslmode': 'verify-full',
+            'sslrootcert': str(DB_SSLROOTCERT),
+        },
     }
 }
 
