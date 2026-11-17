@@ -27,7 +27,13 @@ SECRET_KEY = os.environ["secret_key"]
 DEBUG = os.getenv("debug", "false").lower() in ("true", "1", "yes", "on")
 ALLOWED_HOSTS = [
     host.strip()
-    for host in os.getenv("allowed_hosts", "localhost,127.0.0.1").split(",")
+    for host in os.getenv(
+        "ALLOWED_HOSTS",
+        os.getenv(
+            "allowed_hosts",
+            "localhost,127.0.0.1,ally-backend-rosy.vercel.app",
+        ),
+    ).split(",")
     if host.strip()
 ]
 
@@ -134,8 +140,11 @@ STATIC_URL = 'static/'
 CORS_ALLOWED_ORIGINS = [
     origin.strip()
     for origin in os.getenv(
-        "cors_allowed_origins",
-        "http://localhost:5173,https://front-ally-ra5h.vercel.app",
+        "CORS_ALLOWED_ORIGINS",
+        os.getenv(
+            "cors_allowed_origins",
+            "http://localhost:5173,https://front-ally-ra5h.vercel.app",
+        ),
     ).split(",")
     if origin.strip()
 ]
